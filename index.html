@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solicitud de Habilitación de Servicio – 3 Hojas</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Franklin:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#f3f5f8;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif
+    }
+
+    /* === HOJA A4 EXACTA === */
+    .sheet{
+      width:210mm;
+      height:297mm;
+      padding:8mm;
+      background:#fff;
+      border:2px solid #1a1a1a;
+      margin:5mm auto;
+      overflow:hidden;
+      page-break-inside:avoid;
+    }
+
+    .header-wrap{border:1.6px solid #343a40;border-radius:6px;overflow:hidden;background:#f2f5f9}
+    .header{display:grid;grid-template-columns:200px 1fr;align-items:center}
+    .logo-column{border-right:1.6px solid #343a40;padding:8px;display:flex;align-items:center;justify-content:center}
+    .logo-img{max-height:70px;width:auto;object-fit:contain;display:block}
+    .title-column{text-align:center;padding:16px 8px}
+    .title-main{font-family:"Libre Franklin",Inter,sans-serif;font-weight:700;font-size:22px}
+    .title-sub{margin-top:4px;font-weight:600;font-size:14px}
+
+    .bar-box{margin-top:6mm;border:1.4px solid #343a40;border-radius:6px;overflow:hidden}
+    .bar{display:grid;grid-template-columns:auto 1fr}
+    .bar-label{padding:6px 10px;background:#e9eef6;font-weight:700;border-right:1.4px solid #343a40}
+    .bar-fill{background:#fff}
+
+    table.grid{width:100%;border-collapse:collapse;border-spacing:0}
+    table.grid th,table.grid td{border:1px solid #343a40;padding:6px 7px;font-size:12.6px}
+    table.grid th{background:#f0f3f8;text-align:left;font-weight:600}
+
+    .input-line{
+      width:100%;
+      border:none;
+      border-bottom:1px dashed #7e8790;
+      padding:2px 0;
+      font:inherit;
+      outline:none;
+      background:transparent
+    }
+
+    input[type="date"],
+    textarea{
+      width:100%;
+      border:1px solid #cfd6df;
+      padding:6px 8px;
+      border-radius:4px;
+      font:inherit;
+      resize:vertical
+    }
+
+    .req{color:#c1121f;font-weight:700}
+    .invalid{outline:2px solid #c1121f !important;background:#fff2f2}
+
+    .notice{margin-top:4mm;border:1px solid #000;border-radius:4px;padding:0 4mm 3mm}
+    .notice-head{
+      background:#000;
+      color:#fff;
+      text-align:center;
+      font-weight:700;
+      padding:3mm 2mm;
+      margin:-1px -1px 3mm -1px;
+      border-radius:4px 4px 0 0;
+      font-size:12.5px;
+      letter-spacing:.3px
+    }
+    .notice-list{margin:0 0 0 18px;padding:0;font-size:12px}
+    .notice-list li{margin:2mm 0;line-height:1.35}
+    .notice a{color:#0a58ca;text-decoration:underline}
+
+    /* === INSTRUCTIVO === */
+    #hoja3 .hlead{
+      font-weight:700;
+      text-transform:uppercase;
+      font-size:13px;
+      margin:10px 0 8px 0
+    }
+    #hoja3 ol.inst{margin:6px 0 0 16px;padding:0 8px;font-size:12px}
+    #hoja3 ol.inst li{margin:4px 0;line-height:1.35}
+    #hoja3 .note{font-size:11px;color:#222}
+
+    .toolbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      padding:10px 0;
+      background:transparent
+    }
+    .btn{
+      background:#0067c6;
+      color:#fff;
+      border:0;
+      border-radius:10px;
+      padding:10px 14px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 4px 16px rgba(0,103,198,.25)
+    }
+    .btn.secondary{background:#6c757d}
+
+    /* Tablas específicas */
+    #tblSolicitante{table-layout:fixed}
+    #tblSolicitante th,#tblSolicitante td{white-space:normal;word-break:break-word}
+    #tblSolicitante td:nth-child(4) input{max-width:35mm}
+    #tblSolicitante input[type="number"][inputmode="numeric"]{max-width:35mm}
+
+    .pc-block-title{
+      font-weight:700;
+      font-size:13px;
+      padding:4px 8px 0;
+    }
+
+    .antivirus-options{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+    }
+    .antivirus-options label{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+    }
+
+    @media print{
+      @page{margin:0}
+      .toolbar{display:none!important}
+      .sheet{
+        margin:0 auto;
+        border:2px solid #1a1a1a
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button id="btnPdf" class="btn">Convertir a PDF</button>
+    <button id="btnClear" class="btn secondary">Limpiar Formulario</button>
+  </div>
+
+  <div id="doc">
+    <!-- ================== HOJA 1 – SOLICITUD ================== -->
+    <section id="hoja1" class="sheet">
+      <div class="header-wrap">
+        <div class="header">
+          <div class="logo-column">
+            <!-- Cambiá el logo por el que corresponda -->
+            <img class="logo-img" src="./logo-para-servicios.png" alt="Logo GCBA" crossorigin="anonymous">
+          </div>
+          <div class="title-column">
+            <div class="title-main">Seguridad Informática</div>
+            <div class="title-sub">Ministerio de Justicia y Seguridad - CABA</div>
+            <div style="margin-top:6px;font-weight:700;font-size:14px;text-transform:uppercase;">
+              SOLICITUD DE HABILITACIÓN DE SERVICIO
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATOS DE LA SOLICITUD -->
+      <div class="bar-box">
+        <div class="bar">
+          <div class="bar-label">DATOS DE LA SOLICITUD</div>
+          <div class="bar-fill"></div>
+        </div>
+        <table class="grid">
+          <tr>
+            <th><span class="req">Fecha de Solicitud</span></th>
+            <td><input id="fechaSolicitud" type="date" required></td>
+            <th>Referido a CCOO</th>
+            <td><input class="input-line" type="text" placeholder="NO-AAAA-xxxxxxx-GCABA-XX"></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- DATOS DEL SOLICITANTE -->
+      <div class="bar-box">
+        <div class="bar">
+          <div class="bar-label">DATOS DEL SOLICITANTE</div>
+          <div class="bar-fill"></div>
+        </div>
+        <table id="tblSolicitante" class="grid">
+          <colgroup>
+            <col style="width:16%">
+            <col style="width:50%">
+            <col style="width:16%">
+            <col style="width:18%">
+          </colgroup>
+          <tr>
+            <th><span class="req">Apellido y Nombre</span></th>
+            <td colspan="3">
+              <input id="inpNombre" class="input-line" type="text" required
+                     pattern="^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s']+$"
+                     title="Ingrese solo letras y espacios"
+                     oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s']/g, '')">
+            </td>
+          </tr>
+          <tr>
+            <th><span class="req">Usuario de Dominio</span></th>
+            <td><input id="inpUsuarioDom" class="input-line" type="text" required></td>
+            <th><span class="req">N° de CUIL</span></th>
+            <td>
+              <input id="inpCuil" class="input-line" type="text" inputmode="numeric" maxlength="11" required
+                     oninput="this.value=this.value.replace(/\D/g,'').slice(0,11)"
+                     pattern="^\d{11}$" title="11 dígitos sin guiones">
+            </td>
+          </tr>
+          <tr>
+            <th>Cargo</th>
+            <td><input id="inpCargo" class="input-line" type="text"></td>
+            <th>LP N°</th>
+            <td><input id="inpLP" class="input-line" type="number" min="0" step="1"></td>
+          </tr>
+          <tr>
+            <th>División / Departamento</th>
+            <td colspan="3"><input id="inpDivision" class="input-line" type="text"></td>
+          </tr>
+          <tr>
+            <th>Dependencia</th>
+            <td colspan="3"><input id="inpDependencia" class="input-line" type="text"></td>
+          </tr>
+          <tr>
+            <th>Calle</th>
+            <td><input id="inpCalle" class="input-line" type="text"></td>
+            <th>N°</th>
+            <td>
+              <input id="inpNumero" class="input-line" type="text" inputmode="numeric" maxlength="5"
+                     oninput="this.value=this.value.replace(/\D/g,'').slice(0,5)"
+                     pattern="^\d{0,5}$" title="Hasta 5 dígitos">
+            </td>
+          </tr>
+          <tr>
+            <th>Piso</th>
+            <td><input id="inpPiso" class="input-line" type="text"></td>
+            <th>Teléfono / Interno</th>
+            <td colspan="3">
+              <input id="telSolic" class="input-line" type="text" inputmode="numeric" autocomplete="tel"
+                     maxlength="10" pattern="^\d{10}$" title="Ingrese exactamente 10 dígitos"
+                     oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+            </td>
+          </tr>
+          
+          <th>E-Mail</th>
+            <td colspan="3">
+              <input id="emailSolic" class="input-line" type="email" required data-mail-inst
+                     placeholder="usuario@buenosaires.gob.ar"
+                     pattern="^[a-zA-Z0-9._%+-]+@(buenosaires\.gob\.ar|policiadelaciudad\.gob\.ar|seguridadciudad\.gob\.ar)$"
+                     title="Debe usar @buenosaires.gob.ar, @policiadelaciudad.gob.ar o @seguridadciudad.gob.ar">
+            </td>
+        </table>
+      </div>
+
+      <!-- DETALLES DEL SERVICIO -->
+      <div class="bar-box">
+        <div class="bar">
+          <div class="bar-label">DETALLES DEL SERVICIO</div>
+          <div class="bar-fill"></div>
+        </div>
+        <table class="grid">
+          <tr>
+            <td>
+              <textarea id="detServicio" rows="8"
+                        placeholder="Describa el servicio a habilitar, sistemas involucrados, necesidades específicas, etc."></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- RESPONSABLE DEPENDENCIA -->
+      <div class="bar-box">
+        <div class="bar">
+          <div class="bar-label">RESPONSABLE DE LA DEPENDENCIA</div>
+          <div class="bar-fill"></div>
+        </div>
+        <table class="grid">
+          <tr>
+            <th><span class="req">Apellido y Nombre</span></th>
+            <td colspan="3">
+              <input id="respNombre" class="input-line" type="text" required
+                     pattern="^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s']+$"
+                     title="Ingrese solo letras y espacios">
+            </td>
+          </tr>
+          <tr>
+            <th><span class="req">Cargo</span></th>
+            <td><input id="respCargo" class="input-line" type="text" required></td>
+            <th><span class="req">LP</span></th>
+            <td><input id="respLP" class="input-line" type="text" inputmode="numeric" required></td>
+          </tr>
+          <tr>
+            <th><span class="req">División / Departamento</span></th>
+            <td colspan="3"><input id="respDivision" class="input-line" type="text" required></td>
+          </tr>
+          <tr>
+            <th>E-Mail</th>
+            <td>
+              <input id="emailResp" class="input-line" type="email" required data-mail-inst
+                     pattern="^[a-zA-Z0-9._%+-]+@(buenosaires\.gob\.ar|policiadelaciudad\.gob\.ar|seguridadciudad\.gob\.ar)$"
+                     title="Debe usar @buenosaires.gob.ar, @policiadelaciudad.gob.ar o @seguridadciudad.gob.ar">
+            </td>
+            <th>Teléfono / Interno</th>
+            <td>
+              <input id="respTel" class="input-line" type="text" inputmode="numeric" autocomplete="tel"
+                     maxlength="10" pattern="^\d{10}$" title="Ingrese exactamente 10 dígitos"
+                     oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- AVISO IMPORTANTE -->
+      <div class="notice">
+        <div class="notice-head">AVISO IMPORTANTE</div>
+        <ol class="notice-list">
+          <li>Al finalizar de completar el formulario, recuerde enviarlo vía CCOO a Jonatan PALUMBO (JPALUMBO).</li>
+          <li>Ante cualquier duda comuníquese vía mail a
+            <a href="mailto:soportemjys@buenosaires.gob.ar">soportemjys@buenosaires.gob.ar</a>
+            o al teléfono: 4309-9800 int 115151.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================== HOJA 2 – DATOS PC (1 y 2) ================== -->
+    <section id="hoja2" class="sheet">
+      <div class="header-wrap">
+        <div class="header">
+          <div class="logo-column">
+            <img class="logo-img" src="./logo-para-servicios.png" alt="Logo GCBA" crossorigin="anonymous">
+          </div>
+          <div class="title-column">
+            <div class="title-main">Seguridad Informática</div>
+            <div class="title-sub">Ministerio de Justicia y Seguridad - CABA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice" style="margin-top:5mm;">
+        <div class="notice-head">AVISO IMPORTANTE</div>
+        <ol class="notice-list">
+          <li>Los datos de la PC pueden ser completados por Soporte Técnico.</li>
+          <li>Ante cualquier duda comuníquese a
+            <a href="mailto:soportemjys@buenosaires.gob.ar">soportemjys@buenosaires.gob.ar</a>.
+          </li>
+        </ol>
+      </div>
+
+      <!-- DATOS PC 1 -->
+      <div class="pc-block-title">DATOS DE LA PC 1</div>
+      <div class="bar-box" style="margin-top:2mm;">
+        <div class="bar">
+          <div class="bar-label">PC 1</div>
+          <div class="bar-fill"></div>
+        </div>
+        <table class="grid">
+          <tr>
+            <th>Nombre de la PC</th>
+            <td><input id="pc1Nombre" class="input-line" type="text"></td>
+            <th>Dominio</th>
+            <td>
+              <select id="pc1Dominio" class="input-line" style="border:none;padding:0;">
+                <option value="">[seleccione dominio]</option>
+                <option value="PC">PC</option>
+                <option value="Ministerio">Ministerio</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>IP</th>
+            <td><input id="pc1IP" class="input-line" type="text" placeholder="Ej: 10.x.x.x"></td>
+            <th>Máscara de Subred</th>
+            <td><input id="pc1Mask" class="input-line" type="text" placeholder="Ej: 255.255.255.0"></td>
+          </tr>
+          <tr>
+            <th>Puerta de enlace</th>
+            <td><input id="pc1GW" class="input-line" type="text"></td>
+            <th>Sistema Operativo</th>
+            <td>
+              <select id="pc1SO" class="input-line" style="border:none;padding:0;">
+                <option value="">[Seleccione S.O]</option>
+                <option>Windows 10</option>
+                <option>Windows 11</option>
+                <option>Linux</option>
+                <option>Otro</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>MAC Address</th>
+            <td><input id="pc1MAC" class="input-line" type="text" placeholder="Ej: 00:11:22:33:44:55"></td>
+            <th>Posee Antivirus</th>
+            <td>
+              <div class="antivirus-options">
+                <label><input type="radio" name="pc1AV" value="SI"> SI</label>
+                <label><input type="radio" name="pc1AV" value="NO"> NO</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Observaciones</th>
+            <td colspan="3">
+              <textarea id="pc1Obs" rows="3"></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- DATOS PC 2 -->
+      <div class="pc-block-title" style="margin-top:6mm;">DATOS DE LA PC 2</div>
+      <div class="bar-box" style="margin-top:2mm;">
+        <div class="bar">
+          <div class="bar-label">PC 2</div>
+          <div class="bar-fill"></div>
+        </div>
+        <table class="grid">
+          <tr>
+            <th>Nombre de la PC</th>
+            <td><input id="pc2Nombre" class="input-line" type="text"></td>
+            <th>Dominio</th>
+            <td>
+              <select id="pc2Dominio" class="input-line" style="border:none;padding:0;">
+                <option value="">[seleccione dominio]</option>
+                <option value="PC">PC</option>
+                <option value="Ministerio">Ministerio</option>
+                
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>IP</th>
+            <td><input id="pc2IP" class="input-line" type="text"></td>
+            <th>Máscara de Subred</th>
+            <td><input id="pc2Mask" class="input-line" type="text"></td>
+          </tr>
+          <tr>
+            <th>Puerta de enlace</th>
+            <td><input id="pc2GW" class="input-line" type="text"></td>
+            <th>Sistema Operativo</th>
+            <td>
+              <select id="pc2SO" class="input-line" style="border:none;padding:0;">
+                <option value="">[Seleccione S.O]</option>
+                <option>Windows 10</option>
+                <option>Windows 11</option>
+                <option>Linux</option>
+                <option>Otro</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>MAC Address</th>
+            <td><input id="pc2MAC" class="input-line" type="text"></td>
+            <th>Posee Antivirus</th>
+            <td>
+              <div class="antivirus-options">
+                <label><input type="radio" name="pc2AV" value="SI"> SI</label>
+                <label><input type="radio" name="pc2AV" value="NO"> NO</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Observaciones</th>
+            <td colspan="3">
+              <textarea id="pc2Obs" rows="3"></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================== HOJA 3 – DATOS PC 3 + INSTRUCTIVO ================== -->
+    <section id="hoja3" class="sheet">
+      <div class="header-wrap">
+        <div class="header">
+          <div class="logo-column">
+            <img class="logo-img" src="./logo-para-servicios.png" alt="Logo GCBA" crossorigin="anonymous">
+          </div>
+          <div class="title-column">
+            <div class="title-main">Seguridad Informática</div>
+            <div class="title-sub">Ministerio de Justicia y Seguridad - CABA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice" style="margin-top:5mm;">
+        <div class="notice-head">AVISO IMPORTANTE</div>
+        <ol class="notice-list">
+          <li>Al finalizar de completar el formulario, recuerde enviarlo vía CCOO a Jonatan PALUMBO (JPALUMBO).</li>
+          <li>Ante cualquier duda comuníquese vía mail a
+            <a href="mailto:soportemjys@buenosaires.gob.ar">soportemjys@buenosaires.gob.ar</a>
+            o al teléfono: 4309-9800 int 115151.
+          </li>
+        </ol>
+      </div>
+
+      <!-- DATOS PC 3 -->
+      <div class="pc-block-title" style="margin-top:6mm;">DATOS DE LA PC 3</div>
+      <div class="bar-box" style="margin-top:2mm;">
+        <div class="bar">
+          <div class="bar-label">PC 3</div>
+          <div class="bar-fill"></div>
+        </div>
+        <table class="grid">
+          <tr>
+            <th>Nombre de la PC</th>
+            <td><input id="pc3Nombre" class="input-line" type="text"></td>
+            <th>Dominio</th>
+            <td>
+              <select id="pc3Dominio" class="input-line" style="border:none;padding:0;">
+                <option value="">[seleccione dominio]</option>
+                <option value="PC">PC</option>
+                <option value="Ministerio">Ministerio</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>IP</th>
+            <td><input id="pc3IP" class="input-line" type="text"></td>
+            <th>Máscara de Subred</th>
+            <td><input id="pc3Mask" class="input-line" type="text"></td>
+          </tr>
+          <tr>
+            <th>Puerta de enlace</th>
+            <td><input id="pc3GW" class="input-line" type="text"></td>
+            <th>Sistema Operativo</th>
+            <td>
+              <select id="pc3SO" class="input-line" style="border:none;padding:0;">
+                <option value="">[Seleccione S.O]</option>
+                <option>Windows 10</option>
+                <option>Windows 11</option>
+                <option>Linux</option>
+                <option>Otro</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>MAC Address</th>
+            <td><input id="pc3MAC" class="input-line" type="text"></td>
+            <th>Posee Antivirus</th>
+            <td>
+              <div class="antivirus-options">
+                <label><input type="radio" name="pc3AV" value="SI"> SI</label>
+                <label><input type="radio" name="pc3AV" value="NO"> NO</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Observaciones</th>
+            <td colspan="3">
+              <textarea id="pc3Obs" rows="3"></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- INSTRUCTIVO -->
+      <div class="hlead" style="margin-top:8mm;">
+        INSTRUCCIONES PARA LA CONFECCIÓN DEL FORMULARIO DE SOLICITUD DE SERVICIO
+      </div>
+      <ol class="inst">
+        <li>Los campos en <strong>rojo</strong> son obligatorios. De no completarse, se descartará el formulario de forma automática.</li>
+        <li>Completar la <strong>Fecha de Requerimiento</strong>.</li>
+        <li>Indicar el <strong>N° de CCOO</strong> de referencia. Ej.: <em>NO-2022-xxxxxxxx-GCABA-sigla_repartición</em>.</li>
+        <li>Nombre completo del solicitante.</li>
+        <li>
+          Usuario de Dominio (usuario con el que ingresa a la PC de la dependencia).
+          <div class="note">
+            a) De no poseer, no podrá continuar con la solicitud.<br>
+            b) Deberá solicitarlo al Área de Dominio al siguiente correo electrónico:
+            <em>dominio_mjys@buenosaires.gob.ar</em>.
+          </div>
+        </li>
+        <li>Indicar el <strong>N° de CUIL</strong> (números sin guiones).</li>
+        <li>Indicar <strong>LP del Solicitante</strong> (Personal contratado no completar).</li>
+        <li>Indicar <strong>Ubicación de la Dependencia</strong> (calle, número, piso).</li>
+        <li>
+          Indicar correo electrónico institucional del solicitante
+          (<em>@buenosaires.gob.ar</em>, <em>@policiadelaciudad.gob.ar</em> o <em>@seguridadciudad.gob.ar</em>).
+          <div class="note">
+            En caso de no poseerlo, realizar la solicitud correspondiente (para más información dirigirse a la Intranet).
+          </div>
+        </li>
+        <li>Indicar <strong>Teléfono de contacto</strong>.</li>
+        <li>Los <strong>Datos de la PC</strong> pueden ser completados por Soporte Técnico.</li>
+      </ol>
+    </section>
+  </div>
+
+  <!-- Librería html2pdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  <script>
+    // === Fecha de hoy bloqueada ===
+    function setTodayAndLock(){
+      const d = new Date(), pad = n => String(n).padStart(2,'0');
+      const iso = d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+      const f = document.getElementById('fechaSolicitud');
+      if(!f) return;
+      f.value = iso;
+      f.setAttribute('min', iso);
+      f.setAttribute('max', iso);
+      f.readOnly = true;
+      f.style.pointerEvents = 'none';
+      f.addEventListener('keydown', e=>e.preventDefault());
+      f.addEventListener('mousedown', e=>e.preventDefault());
+    }
+    document.addEventListener('DOMContentLoaded', setTodayAndLock);
+
+    // === Validación de correos institucionales ===
+    const allowedDomains = new Set([
+      "buenosaires.gob.ar",
+      "policiadelaciudad.gob.ar",
+      "seguridadciudad.gob.ar"
+    ]);
+
+    function isAllowedEmail(email){
+      if(!email) return false;
+      const at = email.indexOf("@");
+      if(at === -1) return false;
+      const domain = email.slice(at+1).toLowerCase().trim();
+      return allowedDomains.has(domain);
+    }
+
+    function attachLiveEmailValidation(el){
+      if(!el) return;
+      el.addEventListener("input", ()=>{
+        const v = el.value.trim();
+        if(v && !isAllowedEmail(v)){
+          el.setCustomValidity("El correo debe ser institucional: @buenosaires.gob.ar, @policiadelaciudad.gob.ar o @seguridadciudad.gob.ar");
+        }else{
+          el.setCustomValidity("");
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const emailInputs = document.querySelectorAll('input[type="email"][data-mail-inst]');
+      emailInputs.forEach(attachLiveEmailValidation);
+    });
+
+    // === Validación de campos obligatorios ===
+    function validarRequeridos(){
+      let ok = true;
+
+      // Campos básicos obligatorios
+      ['fechaSolicitud','inpNombre','inpUsuarioDom','inpCuil','respNombre','respCargo','respLP','respDivision','respTel','emailSolic','emailResp']
+        .forEach(id=>{
+          const el = document.getElementById(id);
+          if(!el) return;
+          el.classList.remove('invalid');
+          const val = (el.value || '').trim();
+          if(el.required && (!val || !el.checkValidity())){
+            el.classList.add('invalid');
+            if(ok){
+              el.scrollIntoView({behavior:'smooth',block:'center'});
+              el.reportValidity?.();
+              el.focus();
+            }
+            ok = false;
+          }
+        });
+
+      // e-mails institucionales (solo formato/dominio)
+      const emailNodeList = document.querySelectorAll('input[type="email"][data-mail-inst]');
+      const emailList = Array.from(new Set(emailNodeList));
+      emailList.forEach(el=>{
+        if(!el) return;
+        el.classList.remove('invalid');
+        const v = (el.value || '').trim();
+        if(el.required && !v){
+          el.setCustomValidity("Complete el e-mail institucional.");
+          el.classList.add('invalid');
+          if(ok){
+            el.scrollIntoView({behavior:'smooth',block:'center'});
+            el.reportValidity?.();
+            el.focus();
+          }
+          ok = false;
+          return;
+        }
+        if(v && !isAllowedEmail(v)){
+          el.setCustomValidity("El correo debe ser institucional: @buenosaires.gob.ar, @policiadelaciudad.gob.ar o @seguridadciudad.gob.ar");
+          el.classList.add('invalid');
+          if(ok){
+            el.scrollIntoView({behavior:'smooth',block:'center'});
+            el.reportValidity?.();
+            el.focus();
+          }
+          ok = false;
+        }else{
+          el.setCustomValidity("");
+        }
+      });
+
+      return ok;
+    }
+
+    // === Utilidad para cargar jsPDF si hace falta ===
+    function loadScript(src){
+      return new Promise((resolve,reject)=>{
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    // Render de un nodo a DataURL (usa html2pdf/html2canvas interno)
+    async function nodeToDataURL(el){
+      const worker = html2pdf().set({
+        margin:0,
+        image:{ type:'jpeg', quality:0.98 },
+        html2canvas:{
+          backgroundColor:'#ffffff',
+          scale:2,
+          useCORS:false,
+          allowTaint:true,
+          imageTimeout:0,
+          letterRendering:true,
+          onclone:(doc)=>{
+            const tb = doc.querySelector('.toolbar');
+            if(tb) tb.style.display='none';
+
+            doc.querySelectorAll('.sheet').forEach(s=>{
+              s.style.margin='0 auto';
+              s.style.boxShadow='none';
+              s.style.borderRadius='0';
+              s.style.height='297mm';
+              s.style.overflow='hidden';
+              s.style.pageBreakInside='avoid';
+            });
+
+            // Mostrar las fechas como DD/MM/YYYY en el PDF
+            const dateInputs = doc.querySelectorAll('input[type="date"]');
+            dateInputs.forEach(inp=>{
+              const iso = inp.value || '';
+              let ddmmyyyy = iso;
+              const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+              if(m) ddmmyyyy = m[3] + '/' + m[2] + '/' + m[1];
+
+              const txt = doc.createElement('input');
+              txt.type = 'text';
+              txt.value = ddmmyyyy;
+              txt.readOnly = true;
+              txt.className = inp.className;
+
+              const cs = doc.defaultView.getComputedStyle(inp);
+              txt.style.width        = cs.width;
+              txt.style.padding      = cs.padding;
+              txt.style.font         = cs.font;
+              txt.style.background   = cs.backgroundColor;
+              txt.style.borderTop    = cs.borderTopWidth + ' ' + cs.borderTopStyle + ' ' + cs.borderTopColor;
+              txt.style.borderRight  = cs.borderRightWidth + ' ' + cs.borderRightStyle + ' ' + cs.borderRightColor;
+              txt.style.borderBottom = cs.borderBottomWidth + ' ' + cs.borderBottomStyle + ' ' + cs.borderBottomColor;
+              txt.style.borderLeft   = cs.borderLeftWidth + ' ' + cs.borderLeftStyle + ' ' + cs.borderLeftColor;
+
+              inp.parentNode.replaceChild(txt, inp);
+            });
+          }
+        },
+        jsPDF:{ unit:'mm', format:'a4', orientation:'portrait' }
+      }).from(el).toCanvas();
+
+      const canvas = await worker.get('canvas');
+      return canvas.toDataURL('image/jpeg',0.98);
+    }
+
+    document.getElementById('btnPdf').addEventListener('click', async ()=>{
+      try{ await document.fonts.ready; }catch(_){}
+
+      if(!validarRequeridos()){
+        alert('Por favor complete los campos obligatorios y corrija los e-mails institucionales.');
+        return;
+      }
+
+      const hoja1 = document.getElementById('hoja1');
+      const hoja2 = document.getElementById('hoja2');
+      const hoja3 = document.getElementById('hoja3');
+
+      const cuil = (document.getElementById('inpCuil')?.value || '')
+                    .replace(/\D/g,'').slice(0,11) || 'SIN-CUIL';
+
+      try{
+        const [img1,img2,img3] = await Promise.all([
+          nodeToDataURL(hoja1),
+          nodeToDataURL(hoja2),
+          nodeToDataURL(hoja3)
+        ]);
+
+        let jsPDFCtor = (window.jspdf && (window.jspdf.jsPDF || window.jspdf.default)) || window.jsPDF;
+        if(!jsPDFCtor){
+          await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+          jsPDFCtor = window.jspdf && (window.jspdf.jsPDF || window.jspdf.default);
+        }
+        if(!jsPDFCtor) throw new Error('jsPDF no disponible');
+
+        const pdf = new jsPDFCtor({ unit:'mm', format:'a4', orientation:'portrait' });
+        pdf.addImage(img1,'JPEG',0,0,210,297,undefined,'FAST');
+        pdf.addPage();
+        pdf.addImage(img2,'JPEG',0,0,210,297,undefined,'FAST');
+        pdf.addPage();
+        pdf.addImage(img3,'JPEG',0,0,210,297,undefined,'FAST');
+
+        pdf.save(`Habilitacion de Servicio - ${cuil}.pdf`);
+      }catch(e){
+        console.error(e);
+        alert('No se pudo generar el PDF. Revisá la consola por detalles.');
+      }
+    });
+
+    document.getElementById('btnClear').addEventListener('click', ()=>{
+      document.querySelectorAll('#doc input, #doc textarea, #doc select').forEach(el=>{
+        el.classList.remove('invalid');
+        if(el.type === 'checkbox' || el.type === 'radio'){
+          el.checked = false;
+        }else if(el.tagName.toLowerCase() === 'select'){
+          el.selectedIndex = 0;
+        }else if(el.id !== 'fechaSolicitud'){ // no vaciamos la fecha
+          el.value = '';
+        }
+        if(typeof el.setCustomValidity === 'function'){
+          el.setCustomValidity('');
+        }
+      });
+      // Reforzamos la fecha de hoy bloqueada
+      setTodayAndLock();
+    });
+  </script>
+</body>
+</html>
